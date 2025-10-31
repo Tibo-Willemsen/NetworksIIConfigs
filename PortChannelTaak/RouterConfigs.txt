@@ -1,0 +1,141 @@
+Building configuration...
+
+
+Current configuration : 1959 bytes
+!
+! Last configuration change at 16:17:27 UTC Fri Oct 31 2025
+!
+version 16.9
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+!
+hostname r1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition Mgmt-intf
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+!
+no aaa new-model
+!
+ip dhcp excluded-address 10.10.10.1 10.10.10.9
+ip dhcp excluded-address 10.10.20.1 10.10.20.9
+!
+ip dhcp pool LAN-POOL-1
+ network 10.10.10.0 255.255.255.0
+ default-router 10.10.10.1
+ domain-name example.com
+!
+ip dhcp pool LAN-POOL-2
+ network 10.10.20.0 255.255.255.0
+ default-router 10.10.20.1
+ domain-name example;com
+!
+!
+!
+login on-success log
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+license udi pid ISR4321/K9 sn FDO222743DP
+no license smart enable
+diagnostic bootup level minimal
+!
+spanning-tree extend system-id
+!
+!
+!
+!
+redundancy
+ mode none
+!
+!
+!
+!
+!
+!
+!
+!
+interface Port-channel1
+ no ip address
+ no negotiation auto
+!
+interface Port-channel1.10
+ description default gateway for VLAN 10
+ encapsulation dot1Q 10
+ ip address 10.10.10.1 255.255.255.0
+!
+interface Port-channel1.20
+ description default gateway for VLAN 20
+ encapsulation dot1Q 20
+ ip address 10.10.20.1 255.255.255.0
+!
+interface GigabitEthernet0/0/0
+ no ip address
+ negotiation auto
+ channel-group 1 mode active
+!
+interface GigabitEthernet0/0/1
+ no ip address
+ negotiation auto
+ channel-group 1 mode active
+!
+interface Serial0/1/0
+ no ip address
+!
+interface Serial0/1/1
+ no ip address
+!
+interface GigabitEthernet0
+ vrf forwarding Mgmt-intf
+ no ip address
+ negotiation auto
+!
+ip forward-protocol nd
+no ip http server
+ip http secure-server
+ip tftp source-interface GigabitEthernet0
+!
+!
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ transport input none
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ login
+!
+!
+!
+!
+!
+!
+end
