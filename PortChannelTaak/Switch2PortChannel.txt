@@ -1,0 +1,158 @@
+Building configuration...
+
+Current configuration : 3525 bytes
+!
+! Last configuration change at 00:23:31 UTC Mon Mar 1 1993
+!
+version 15.0
+no service pad
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname SW2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+no aaa new-model
+system mtu routing 1500
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-2376327424
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-2376327424
+ revocation-check none
+ rsakeypair TP-self-signed-2376327424
+!
+!
+crypto pki certificate chain TP-self-signed-2376327424
+ certificate self-signed 01
+  3082022B 30820194 A0030201 02020101 300D0609 2A864886 F70D0101 05050030
+  31312F30 2D060355 04031326 494F532D 53656C66 2D536967 6E65642D 43657274
+  69666963 6174652D 32333736 33323734 3234301E 170D3933 30333031 30303031
+  30305A17 0D323030 31303130 30303030 305A3031 312F302D 06035504 03132649
+  4F532D53 656C662D 5369676E 65642D43 65727469 66696361 74652D32 33373633
+  32373432 3430819F 300D0609 2A864886 F70D0101 01050003 818D0030 81890281
+  81008BDA 59D77AFF BC1F06B2 C0C46264 A4C94930 D13085A9 2646E6FB 89271B23
+  26B489ED 8684B723 CF83B5BF 4FA1E7EC C1D34410 04858374 02CB0D32 64E34267
+  D18AA144 F0239122 B4E4E689 33AD1F4C DDB61AB5 A87BC1FF DE7E3DE2 CF6BFFCA
+  0CCFB826 1ADE327B 41049FC4 102F681C 2E63BC05 8D6643BE D6D685A2 5C108747
+  B9570203 010001A3 53305130 0F060355 1D130101 FF040530 030101FF 301F0603
+  551D2304 18301680 14137BE0 BB0A7FCB 34894234 658AEAB0 B516CE38 89301D06
+  03551D0E 04160414 137BE0BB 0A7FCB34 89423465 8AEAB0B5 16CE3889 300D0609
+  2A864886 F70D0101 05050003 81810006 0FEC0F8C 284E00F5 17F7D91D FC54A149
+  8F8655E2 37A2899B 204CA00D D706AB54 11BDEEF6 4F6FE66C C33DFE23 299BFA1B
+  618A5ED3 6A633631 ED9B8EAD 7B8AC2EA 6985B493 39431089 899345A8 8F9FD135
+  5AB5C0E6 8E0BD1D0 F621443E 6B8A810C 7D3E0E20 21A3B92A 1E112979 A682DD1F
+  14AE6FF9 32508D39 88034B3E 837335
+        quit
+!
+!
+!
+!
+!
+port-channel load-balance src-dst-mac
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+vlan internal allocation policy ascending
+!
+!
+!
+!
+!
+!
+interface Port-channel1
+ switchport trunk native vlan 99
+ switchport trunk allowed vlan 10,20,99
+ switchport mode trunk
+!
+interface FastEthernet0/1
+ switchport trunk native vlan 99
+ switchport trunk allowed vlan 10,20,99
+ switchport mode trunk
+ channel-group 1 mode on
+!
+interface FastEthernet0/2
+ switchport trunk native vlan 99
+ switchport trunk allowed vlan 10,20,99
+ switchport mode trunk
+ channel-group 1 mode on
+!
+interface FastEthernet0/3
+!
+interface FastEthernet0/4
+!
+interface FastEthernet0/5
+!
+interface FastEthernet0/6
+!
+interface FastEthernet0/7
+!
+interface FastEthernet0/8
+!
+interface FastEthernet0/9
+!
+interface FastEthernet0/10
+!
+interface FastEthernet0/11
+!
+interface FastEthernet0/12
+!
+interface FastEthernet0/13
+!
+interface FastEthernet0/14
+!
+interface FastEthernet0/15
+!
+interface FastEthernet0/16
+!
+interface FastEthernet0/17
+!
+interface FastEthernet0/18
+!
+interface FastEthernet0/19
+!
+interface FastEthernet0/20
+!
+interface FastEthernet0/21
+!
+interface FastEthernet0/22
+!
+interface FastEthernet0/23
+!
+interface FastEthernet0/24
+!
+interface GigabitEthernet0/1
+ switchport access vlan 10
+ switchport mode access
+!
+interface GigabitEthernet0/2
+ switchport access vlan 20
+ switchport mode access
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+interface Vlan10
+ ip address 10.10.10.3 255.255.255.0
+!
+interface Vlan20
+ ip address 10.10.20.3 255.255.255.0
+!
+ip http server
+ip http secure-server
+!
+!
+line con 0
+line vty 0 4
+ login
+line vty 5 15
+ login
+!
+end
