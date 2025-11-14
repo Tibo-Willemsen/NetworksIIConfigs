@@ -1,0 +1,177 @@
+Building configuration...
+
+
+Current configuration : 4305 bytes
+!
+! Last configuration change at 12:41:44 UTC Fri Nov 14 2025
+!
+version 16.9
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+!
+hostname R1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition Mgmt-intf
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+!
+no aaa new-model
+!
+!
+!
+!
+login on-success log
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+ipv6 unicast-routing
+ipv6 dhcp pool IPV6-STATELESS
+ dns-server 2001:ABED:10::1
+ domain-name example.com
+!
+ipv6 dhcp pool ipv6-STATEFULL
+ address prefix 2001:ABED:20::/64
+ dns-server 2001:ABED:20::1
+ domain-name example.com
+!
+multilink bundle-name authenticated
+!
+!
+!
+crypto pki trustpoint TP-self-signed-3111324017
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-3111324017
+ revocation-check none
+ rsakeypair TP-self-signed-3111324017
+!
+!
+crypto pki certificate chain TP-self-signed-3111324017
+ certificate self-signed 01
+  30820330 30820218 A0030201 02020101 300D0609 2A864886 F70D0101 05050030
+  31312F30 2D060355 04031326 494F532D 53656C66 2D536967 6E65642D 43657274
+  69666963 6174652D 33313131 33323430 3137301E 170D3235 31313134 31313237
+  34345A17 0D333030 31303130 30303030 305A3031 312F302D 06035504 03132649
+  4F532D53 656C662D 5369676E 65642D43 65727469 66696361 74652D33 31313133
+  32343031 37308201 22300D06 092A8648 86F70D01 01010500 0382010F 00308201
+  0A028201 0100EA88 24A16F87 47A678D7 1D715D74 34570391 F1822998 3DC4AFE1
+  24FA20D8 CC244279 B3F59F87 DE1BE7F7 B3923B80 5A9646A9 4F7047DD 11634F4A
+  741536C0 C9D02B90 08A0648C 16EEF9CE 00A9F303 4C6E5BE3 1070CE44 50CBD852
+  F0B2BBA5 F2696D69 7724A662 276E66E4 6FF4436D 15E99457 134F8BBC 0BE3FB07
+  1A498CC4 AA0FC398 0FB0C0AE 635DF928 1574D64A ECC23864 B61F12C3 0EA7F507
+  3FA23C94 32AF3920 4D622DB8 13E187E6 F3D2B3B4 D5590F83 3FBDCCC3 DD5A0C45
+  788B1E45 5E00A418 B63FCAB0 DED6BEAA 0F30E15B 679BAC8E 04B4B55F F3B0CB63
+  ABE11695 F39E80AD 1A8FBD92 CE7D92C7 0EA91898 1B788285 FCAC2E6C 09D39DE0
+  C2D6DEEF E1430203 010001A3 53305130 0F060355 1D130101 FF040530 030101FF
+  301F0603 551D2304 18301680 14681683 1E96FED8 A4469A43 CF607046 298B8BA5
+  C3301D06 03551D0E 04160414 6816831E 96FED8A4 469A43CF 60704629 8B8BA5C3
+  300D0609 2A864886 F70D0101 05050003 82010100 D2C104CB E33D73C0 476EBB26
+  8BADFB6E B42CA2D3 3F086696 F7D97F11 0E628C97 2639D896 0D283A8F B2F119A7
+  2535B5EE 77408039 BFDABCD0 021E1C1A 3448B6FB AB3416EE 3ED7A434 48ACF590
+  81BDA679 2DEBF944 0AB3BEE0 B3C9540A 6767E2CA 023D4FEF CE8D7135 D822B0F5
+  75DDF7E7 695997F5 352F7C3B 34931EAA 32618FB8 9162E64A 139BDD93 29E4E8D2
+  41BBF2CF C0E8E911 3DA18050 82A7C41F 4DD1383D 6B923116 2DA17011 3EC6FEEF
+  E799741E E0870393 1B0BF912 2DAE8A32 BED5AA6B C8865250 37C8838A C2B5FD97
+  7BA8E806 95BE07D6 1EF001AA 7E2ED843 6C6336D5 6AB83F38 94F92D6C 58438F5D
+  09A9744D C8A76E2E 0BF46CD6 149D1E77 6F8E8D0A
+        quit
+!
+license udi pid ISR4321/K9 sn FDO222743CS
+no license smart enable
+diagnostic bootup level minimal
+!
+spanning-tree extend system-id
+!
+!
+!
+!
+redundancy
+ mode none
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0/0
+ description Link to VLAN 10
+ no ip address
+ ip broadcast-address 0.0.0.0
+ negotiation auto
+ ipv6 address FE80::1 link-local
+ ipv6 address 2001:ABED:10::1/64
+ ipv6 nd other-config-flag
+ ipv6 dhcp server IPV6-STATELESS
+!
+interface GigabitEthernet0/0/1
+ description LAN to VLAN 20
+ no ip address
+ ip broadcast-address 0.0.0.0
+ negotiation auto
+ ipv6 address FE80::1 link-local
+ ipv6 address 2001:ABED:20::1/64
+ ipv6 nd prefix default 2592000 604800 no-autoconfig
+ ipv6 nd managed-config-flag
+ ipv6 dhcp server IPV6-STATEFUL
+!
+interface Serial0/1/0
+ ip broadcast-address 0.0.0.0
+ ipv6 address 2001:ABED:2::1/64
+!
+interface Serial0/1/1
+ ip broadcast-address 0.0.0.0
+!
+interface GigabitEthernet0
+ vrf forwarding Mgmt-intf
+ no ip address
+ ip broadcast-address 0.0.0.0
+ shutdown
+ negotiation auto
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+ip tftp source-interface GigabitEthernet0
+!
+!
+ipv6 route 2001:ADEB:30::/64 Serial0/1/0
+ipv6 route ::/0 Serial0/1/0
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ transport input none
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ login
+!
+!
+!
+!
+!
+!
+end
